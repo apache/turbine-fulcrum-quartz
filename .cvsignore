@@ -1,0 +1,6 @@
+.classpath
+.project
+velocity.log
+target
+junit*.properties
+jcoverage.ser

@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+  <properties>
+    <title>Quartz Scheduler Component</title>
+    <author email="epugh@opensourceconnections.com">Eric Pugh</author>
+  </properties>
+
+  <body>
+
+  <section name="Overview">
+    <p>
+     This Service functions as a wrapper around the Quartz Scheduler
+   </p>
+
+    <p>
+      It is written for use in any Avalon compatible container.
+    </p>
+  </section>
+
+<section name="Configuration">
+
+    <p>
+      First, here is the role configuration.
+    </p>
+
+    <source>
+    <![CDATA[
+        <role
+            name="org.apache.fulcrum.quartz.QuartzService"
+            shorthand="quartz"
+            default-class="org.apache.fulcrum.quartz.DefaultQuartzService"/>
+    ]]>
+    </source>
+
+      <p>
+        And here is the configuration:
+      </p>
+    <source>
+
+    <![CDATA[
+ <quartz>
+        <globalJobListener className="org.apache.fulcrum.quartz.listener.FooListener" />
+	    <jobDetails>
+            <list>
+              <org.quartz.JobDetail>
+                <name>simpleJob</name>
+                <group>DEFAULT_GROUP</group>
+                <jobClass>org.apache.fulcrum.quartz.test.SimpleJob</jobClass>
+                <volatility>false</volatility>
+                <durability>false</durability>
+                <shouldRecover>false</shouldRecover>
+                <jobListeners/>
+              </org.quartz.JobDetail>
+              <org.quartz.JobDetail>
+                <name>notSoSimpleJob</name>
+                <group>DEFAULT_GROUP</group>
+                <jobClass>org.apache.fulcrum.quartz.test.NotSoSimpleJob</jobClass>
+                <volatility>false</volatility>
+                <durability>false</durability>
+                <shouldRecover>false</shouldRecover>
+                <jobListeners/>
+              </org.quartz.JobDetail>
+            </list>
+        </jobDetails>
+        <triggers>
+            <list>
+			 <org.quartz.CronTrigger serialization="custom">
+			  <org.quartz.Trigger>
+			    <default>
+			      <misfireInstruction>0</misfireInstruction>
+			      <volatility>false</volatility>
+			      <group>OTHER_GROUP</group>
+			      <jobGroup>DEFAULT_GROUP</jobGroup>
+			      <jobName>notSoSimpleJob</jobName>
+			      <name>cron</name>
+			      <triggerListeners/>
+			    </default>
+			  </org.quartz.Trigger>
+			  <org.quartz.CronTrigger>
+			    <default>
+			      <cronExpression>0 0 12 * * ?</cronExpression>
+			      <startTime>2005-10-20 11:10:45.0 EDT</startTime>
+
+			    </default>
+			  </org.quartz.CronTrigger>
+ 			 </org.quartz.CronTrigger>
+              <org.quartz.SimpleTrigger>
+                <name>simpleTrigger</name>
+                <group>DEFAULT_GROUP</group>
+                <description>test</description>
+
+              </org.quartz.SimpleTrigger>
+            </list>
+        </triggers>
+    </quartz>
+    ]]>
+    </source>
+    <b>Note:</b> The section for CronTrigger is Quartz 1.5 specific.  For Quartz 1.4, you may need to tweak the cronTrigger pattern.
+
+  </section>
+
+  <section name="Usage">
+
+
+    <p>
+    Please look at the unit tests.
+    </p>
+
+  </section>
+
+</body>
+</document>
