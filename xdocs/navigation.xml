@@ -32,7 +32,8 @@
 
     <menu name="Overview">
       <item name="Main"             href="/index.html"/>
-      <item name="Quartz"           href="http://www.opensymphony.com/quartz"/>
+      <item name="Quartz"           href="http://www.opensymphony.com/quartz/"/>
+      <item name="XStream"          href="http://xstream.codehaus.org/"/>
     </menu>
   </body>
 </project>

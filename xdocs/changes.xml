@@ -24,11 +24,19 @@
   </properties>
 
   <body>
-    <release version="1.1" date="">
-     <action dev="epugh" type="update">
+    <release version="1.1" date="in svn">
+      <action dev="seade" type="update">
+        Added a Maven 2 pom and expanded the JavaDocs.
+      </action>
+      <action dev="seade" type="update">
+        Bump to Quartz 1.5.2, update to new XStream xml format for CronTrigger.
+        It looks like this may have stabilized now.
+        Thanks to Youngho Cho for the patch.
+      </action>
+      <action dev="epugh" type="update">
         Bump to Quartz 1.5.1.
       </action>
-     <action dev="epugh" type="update">
+      <action dev="epugh" type="update">
         Upgrade to Quartz 1.5, update for the new xstream xml format for CronTrigger.
       </action>
     </release>

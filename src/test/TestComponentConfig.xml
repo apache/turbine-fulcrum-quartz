@@ -22,7 +22,7 @@
     <quartz>
         <globalJobListener className="org.apache.fulcrum.quartz.listener.FooListener" />
         <scheduled jobName="simpleJob" jobGroup="DEFAULT_GROUP" triggerName="cron" triggerGroup="OTHER_GROUP"/>
-	    <jobDetails>
+        <jobDetails>
             <list>
               <org.quartz.JobDetail>
                 <name>simpleJob</name>
@@ -46,31 +46,27 @@
         </jobDetails>
         <triggers>
             <list>
-			 <org.quartz.CronTrigger serialization="custom">
-			  <org.quartz.Trigger>
-			    <default>
-			      <misfireInstruction>0</misfireInstruction>
-			      <volatility>false</volatility>
-			      <group>OTHER_GROUP</group>
-			      <jobGroup>DEFAULT_GROUP</jobGroup>
-			      <jobName>notSoSimpleJob</jobName>
-			      <name>cron</name>
-			      <triggerListeners/>
-			    </default>
-			  </org.quartz.Trigger>
-			  <org.quartz.CronTrigger>
-			    <default>
-			      <cronExpression>0 0 12 * * ?</cronExpression>
-			      <startTime>2005-10-20 11:10:45.0 EDT</startTime>
-
-			    </default>
-			  </org.quartz.CronTrigger>
- 			 </org.quartz.CronTrigger>
+              <org.quartz.CronTrigger>
+                <startTime>2005-10-20 11:10:45.0 EDT</startTime>
+                <misfireInstruction>0</misfireInstruction>
+                <volatility>false</volatility>
+                <group>OTHER_GROUP</group>
+                <jobGroup>DEFAULT_GROUP</jobGroup>
+                <jobName>notSoSimpleJob</jobName>
+                <name>cron</name>
+                <triggerListeners/>
+                <cronEx serialization="custom">
+                  <org.quartz.CronExpression>
+                    <default>
+                      <cronExpression>0 0 12 * * ?</cronExpression>
+                    </default>
+                  </org.quartz.CronExpression>
+                </cronEx>
+              </org.quartz.CronTrigger>
               <org.quartz.SimpleTrigger>
                 <name>simpleTrigger</name>
                 <group>DEFAULT_GROUP</group>
                 <description>test</description>
-
               </org.quartz.SimpleTrigger>
             </list>
         </triggers>
