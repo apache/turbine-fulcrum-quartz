@@ -30,102 +30,8 @@
 
   <section name="Overview">
     <p>
-     This Service functions as a wrapper around the Quartz Scheduler
-   </p>
-
-    <p>
-      It is written for use in any Avalon compatible container.
-    </p>
-  </section>
-
-<section name="Configuration">
-
-    <p>
-      First, here is the role configuration.
-    </p>
-
-    <source>
-    <![CDATA[
-        <role
-            name="org.apache.fulcrum.quartz.QuartzService"
-            shorthand="quartz"
-            default-class="org.apache.fulcrum.quartz.DefaultQuartzService"/>
-    ]]>
-    </source>
-
-      <p>
-        Now comes the job configuration:
-      </p>
-
-    <source>
-    <![CDATA[
-    <quartz>
-        <globalJobListener className="org.apache.fulcrum.quartz.listener.FooListener" />
-        <scheduled jobName="simpleJob" jobGroup="DEFAULT_GROUP" triggerName="cron" triggerGroup="OTHER_GROUP"/>
-        <jobDetails>
-            <list>
-              <org.quartz.JobDetail>
-                <name>simpleJob</name>
-                <group>DEFAULT_GROUP</group>
-                <jobClass>org.apache.fulcrum.quartz.test.SimpleJob</jobClass>
-                <volatility>false</volatility>
-                <durability>false</durability>
-                <shouldRecover>false</shouldRecover>
-                <jobListeners/>
-              </org.quartz.JobDetail>
-              <org.quartz.JobDetail>
-                <name>notSoSimpleJob</name>
-                <group>DEFAULT_GROUP</group>
-                <jobClass>org.apache.fulcrum.quartz.test.NotSoSimpleJob</jobClass>
-                <volatility>false</volatility>
-                <durability>false</durability>
-                <shouldRecover>false</shouldRecover>
-                <jobListeners/>
-              </org.quartz.JobDetail>
-            </list>
-        </jobDetails>
-        <triggers>
-            <list>
-              <org.quartz.CronTrigger>
-                <startTime>2005-10-20 11:10:45.0 EDT</startTime>
-                <misfireInstruction>0</misfireInstruction>
-                <volatility>false</volatility>
-                <group>OTHER_GROUP</group>
-                <jobGroup>DEFAULT_GROUP</jobGroup>
-                <jobName>notSoSimpleJob</jobName>
-                <name>cron</name>
-                <triggerListeners/>
-                <cronEx serialization="custom">
-                  <org.quartz.CronExpression>
-                    <default>
-                      <cronExpression>0 0 12 * * ?</cronExpression>
-                    </default>
-                  </org.quartz.CronExpression>
-                </cronEx>
-              </org.quartz.CronTrigger>
-              <org.quartz.SimpleTrigger>
-                <name>simpleTrigger</name>
-                <group>DEFAULT_GROUP</group>
-                <description>test</description>
-              </org.quartz.SimpleTrigger>
-            </list>
-        </triggers>
-    </quartz>
-    ]]>
-    </source>
-
-    <p>
-    <b>Note:</b> The section for CronTrigger has to date varied with Quartz
-    releases (the one above is suitable for Quartz 1.5.2).  The format depends
-    on how <a href="http://xstream.codehaus.org/">XStream</a> processes the
-    <a href="http://www.opensymphony.com/quartz/api/serialized-form.html#org.quartz.CronTrigger">
-    serialized form</a> of
-    <a href="http://www.opensymphony.com/quartz/api/org/quartz/CronTrigger.html">CronTrigger</a>.
-    </p>
-
-    <p>
-    Refer to the <a href="http://www.opensymphony.com/quartz/api/">Quartz JavaDoc</a>
-    for details of the serialized form of the other configuration elements.
+      This Service functions as a wrapper around the <a href="http://www.quartz-scheduler.org/">
+      Quartz Scheduler</a>. It is written for use in any Avalon compatible container.
     </p>
 
   </section>
@@ -133,24 +39,25 @@
   <section name="Usage">
 
     <p>
-    Scheduled tasks are quite straightforward to create.  The only requirement
-    is that the interface 
-    <a href="http://www.opensymphony.com/quartz/api/org/quartz/Job.html">org.quartz.Job</a>
-    be implemented.  This requires just that one method be defined, execute(), whose
-    <a href="http://www.opensymphony.com/quartz/api/org/quartz/JobExecutionContext.html">
-    org.quartz.JobExecutionContext</a> argument provides you with details of the
-    execution context when the task is triggered.
+      Scheduled jobs can be either created programmatically (using the Quartz API) or by 
+      using an XML configuration based on the 'XMLSchedulingDataProcessorPlugin'. A 
+      scheduled job consists of a class implementing the interface 
+      <a href="http://www.quartz-scheduler.org/docs/api/1.8.1/org/quartz/Job.html">org.quartz.Job</a>
+      This requires just that one method be defined, execute(), whose
+      <a href="http://www.opensymphony.com/quartz/api/org/quartz/JobExecutionContext.html">
+      org.quartz.JobExecutionContext</a> argument provides you with details of the
+      execution context when the task is triggered.
     </p>
 
     <source>
-    <![CDATA[
+<![CDATA[
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 public class SimpleJob implements Job
 {
-	public static boolean executed = false;
+    public static boolean executed = false;
 
     public SimpleJob()
     {
@@ -162,15 +69,49 @@ public class SimpleJob implements Job
     {
         executed = true;
     }
-}
-    ]]>
+}]]>
     </source>
 
-	<p>
-	An additional example can be found in the unit tests for this component.
-	</p>
-
+  <p>
+    In order to invoke the SimpleJob we have to tell Quartz when to invoke
+    the 'execute' method. In this case we create a CRON trigger firing every
+    second to invoke SimpleJob#execute() on a newly created instance. Please
+    note that we definea set of parameters using the &lt;job-data-map&gt; 
+    which are available using 'JobExecutionContext'.   
+  </p>
+    
+    <source>
+<![CDATA[
+<schedule>
+    <job>
+        <name>simpleJob</name>
+        <group>TURBINE</group>
+        <description>A simple job</description>
+        <job-class>org.apache.fulcrum.quartz.test.SimpleJob</job-class>
+        <job-data-map>
+            <entry>
+                <key>dressing-list</key>
+                <value>ketchup,mayo</value>
+            </entry>
+            <entry>
+                <key>burger-type</key>
+                <value>hotdog</value>
+            </entry>
+        </job-data-map>
+    </job>
+    <trigger>
+        <cron>
+            <!-- define a Cron trigger firing every second from now on -->
+            <name>cronTrigger</name>
+            <group>TURBINE</group>
+            <job-name>simpleJob</job-name>
+            <job-group>TURBINE</job-group>
+            <cron-expression>* * * * * ?</cron-expression>
+        </cron>
+    </trigger>
+</schedule> 
+]]>
+    </source>
   </section>
-
 </body>
 </document>

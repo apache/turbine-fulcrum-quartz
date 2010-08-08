@@ -19,7 +19,7 @@
 
 package org.apache.fulcrum.quartz;
 
-import org.apache.fulcrum.quartz.impl.DefaultQuartzScheduler;
+import org.apache.fulcrum.quartz.test.NotSoSimpleJob;
 import org.apache.fulcrum.quartz.test.SimpleJob;
 import org.apache.fulcrum.testcontainer.BaseUnitTest;
 
@@ -28,9 +28,10 @@ import org.apache.fulcrum.testcontainer.BaseUnitTest;
  *
  * @author <a href="mailto:epughNOSPAM@opensourceconnections.com">Eric Pugh </a>
  */
-public class BaseQuartzTestCase extends BaseUnitTest {
+public abstract class BaseQuartzTestCase extends BaseUnitTest {
 
     protected QuartzScheduler quartz;
+
     public BaseQuartzTestCase(String arg0) {
         super(arg0);
     }
@@ -41,16 +42,17 @@ public class BaseQuartzTestCase extends BaseUnitTest {
 
 
     public void setUp() throws Exception {
-        quartz = (QuartzScheduler) lookup(QuartzScheduler.ROLE);
-
         SimpleJob.reset();
+        NotSoSimpleJob.reset();
+        quartz = (QuartzScheduler) lookup(QuartzScheduler.class.getName());
+        System.out.println(">>> " + getName() + ">>>");
     }
 
 
     public void tearDown() {
-        release(QuartzScheduler.ROLE);
+        release(QuartzScheduler.class.getName());
         SimpleJob.reset();
+        NotSoSimpleJob.reset();
         super.tearDown();
     }
-
 }

@@ -24,37 +24,25 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
- *
+ * A stateless job triggered by Quartz scheduler which keeps track
+ * if it was wasExecuted
  */
 public class SimpleJob
-	implements Job
+        implements Job
 {
-	public static boolean executed = false;
-
-	public static boolean composed = false;
-
-
-    /**
-     *
-     */
-    public SimpleJob()
-    {
-        super();
-    }
+    public static boolean wasExecuted = false;
 
     /**
      * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
      */
     public void execute(JobExecutionContext context)
-    	throws JobExecutionException
+            throws JobExecutionException
     {
-		executed = true;
+        wasExecuted = true;
     }
 
-    public static void reset(){
-        executed=false;
-        composed=false;
+    public static void reset()
+    {
+        wasExecuted = false;
     }
-
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <job-scheduling-data xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd" version="1.8">
+        <pre-processing-commands>
+            <delete-jobs-in-group>*</delete-jobs-in-group>
+            <!-- clear all jobs in scheduler -->
+            <delete-triggers-in-group>*</delete-triggers-in-group>
+            <!-- clear all triggers in scheduler -->
+        </pre-processing-commands>
+        <processing-directives>
+            <!-- if there are any jobs/trigger in scheduler of same name (as in this file), overwrite them -->
+            <overwrite-existing-data>true</overwrite-existing-data>
+            <!-- if there are any jobs/trigger in scheduler of same name (as in this file), and over-write is false, ignore them rather then generating an error -->
+            <ignore-duplicates>false</ignore-duplicates>
+        </processing-directives>
+        <schedule>
+            <job>
+                <name>simpleJob</name>
+                <group>TURBINE</group>
+                <description>A simple job</description>
+                <job-class>org.apache.fulcrum.quartz.test.SimpleJob</job-class>
+                <job-data-map>
+                    <entry>
+                        <key>dressing-list</key>
+                        <value>ketchup,mayo</value>
+                    </entry>
+                    <entry>
+                        <key>burger-type</key>
+                        <value>hotdog</value>
+                    </entry>
+                </job-data-map>
+            </job>
+            <job>
+                <name>notSoSimpleJob</name>
+                <group>TURBINE</group>
+                <description>A not so simple job using a service manager</description>
+                <job-class>org.apache.fulcrum.quartz.test.NotSoSimpleJob</job-class>
+            </job>
+            <trigger>
+                <cron>
+                    <!-- define a Cron trigger firing every second from now on -->
+                    <name>cronTrigger</name>
+                    <group>TURBINE</group>
+                    <job-name>notSoSimpleJob</job-name>
+                    <job-group>TURBINE</job-group>
+                    <cron-expression>* * * * * ?</cron-expression>
+                </cron>
+            </trigger>
+            <trigger>
+                <simple>
+                    <!-- define a simple trigger firing every second -->
+                    <name>simpleTrigger</name>
+                    <group>TURBINE</group>
+                    <job-name>simpleJob</job-name>
+                    <job-group>TURBINE</job-group>
+                    <volatility>true</volatility>
+                    <start-time>2010-08-01T00:00:00</start-time>
+                    <misfire-instruction>MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT</misfire-instruction>
+                    <repeat-count>-1</repeat-count>
+                    <repeat-interval>1000</repeat-interval>
+                </simple>
+            </trigger>
+        </schedule>
+</job-scheduling-data>

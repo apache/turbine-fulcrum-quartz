@@ -25,6 +25,10 @@
 
   <body>
     <release version="1.1.0" date="in svn">
+      <action dev="sgoeschl" type="update" date="2010-08-08">
+        Complete rewrite of the service thereby using quartz-1.8.3 and
+        dropping xstream.
+      </action>
       <action dev="sgoeschl" type="update" date="2010-03-22">
         Improved the M2 build to cut a release candidate
       </action>

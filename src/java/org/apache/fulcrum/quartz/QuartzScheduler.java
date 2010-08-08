@@ -19,30 +19,18 @@
 
 package org.apache.fulcrum.quartz;
 
-import java.util.Map;
-
 import org.quartz.Scheduler;
 
 /**
- * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
  *
+ * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
  */
 public interface QuartzScheduler
 {
-	/** avalon idion */
-	public static final String ROLE = QuartzScheduler.class.getName();
-
+    /**
+     * Get the underlying Quartz scheduler.
+     *
+     * @return the Quartz scheduler
+     */
 	Scheduler getScheduler();
-
-	/**
-	 * Map containing JobDetail objects. Key is group.name
-	 * @return
-	 */
-	Map getJobDetailsMap();
-
-	/**
-	 * Map containing Trigger objects. Key is group.name
-	 * @return
-	 */
-	Map getTriggersMap();
 }

@@ -17,11 +17,9 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<!-- This configuration file for Avalon components is used for testing the TestComponent -->
 <role-list>
     <role
         name="org.apache.fulcrum.quartz.QuartzScheduler"
         shorthand="quartz"
-        default-class="org.apache.fulcrum.quartz.impl.DefaultQuartzScheduler"/>
-
+        default-class="org.apache.fulcrum.quartz.impl.QuartzSchedulerImpl"/>
 </role-list>

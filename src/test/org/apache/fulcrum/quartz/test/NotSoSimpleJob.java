@@ -33,9 +33,9 @@ import org.quartz.JobExecutionException;
 public class NotSoSimpleJob
 	implements Job,Serviceable
 {
-	public static boolean executed = false;
+	public static boolean wasExecuted = false;
 
-	public static boolean serviced = false;
+	public static boolean wasServiced = false;
 
     private ServiceManager manager;
 
@@ -53,7 +53,15 @@ public class NotSoSimpleJob
     public void execute(JobExecutionContext context)
     	throws JobExecutionException
     {
-		executed = true;
+        try
+        {
+            Thread.sleep(100);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        wasExecuted = true;
     }
 
     /**
@@ -65,6 +73,11 @@ public class NotSoSimpleJob
     	throws ServiceException
     {
 		this.manager = manager;
-		serviced = true;
+		wasServiced = true;
     }
+
+    public static void reset()
+    {
+        wasExecuted = false;
+    }    
 }
