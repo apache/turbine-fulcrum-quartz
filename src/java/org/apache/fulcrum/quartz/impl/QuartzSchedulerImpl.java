@@ -26,6 +26,7 @@ import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.logger.AbstractLogEnabled;
+import org.apache.avalon.framework.logger.LogEnabled;
 import org.apache.avalon.framework.parameters.Parameters;
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.avalon.framework.service.ServiceManager;
@@ -183,13 +184,22 @@ public class QuartzSchedulerImpl
     }
 
     /**
-     * Calls service() on Job instance if it implements Serviceable
+     * Hook to support jobs implementing Avalon interface such as
+     * LogEnabled and Serviceable.
      *
      * @see org.quartz.JobListener#jobToBeExecuted(org.quartz.JobExecutionContext)
      */
     public void jobToBeExecuted(JobExecutionContext context)
     {
         Job job = context.getJobInstance();
+
+        // inject a logger instance
+        if(job instanceof LogEnabled)
+        {
+            ((LogEnabled) job).enableLogging(getLogger());
+        }
+
+        // inject a ServiceManager instance
         if (job instanceof Serviceable)
         {
             try
@@ -257,7 +267,7 @@ public class QuartzSchedulerImpl
                 }
                 else
                 {
-                    buffer.append("unknown");
+                    buffer.append("no trigger defined");
                 }
 
                 getLogger().info(buffer.toString());
