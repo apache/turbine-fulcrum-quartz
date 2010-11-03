@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+  <properties>
+    <title>Quartz Scheduler Component</title>
+    <author email="epugh@opensourceconnections.com">Eric Pugh</author>
+    <author email="seade@backstagetech.com.au">Scott Eade</author>
+  </properties>
+
+  <body>
+
+  <section name="Overview">
+    <p>
+      This Service functions as a wrapper around the <a href="http://www.quartz-scheduler.org/">
+      Quartz Scheduler</a>. It is written for use in any Avalon compatible container.
+    </p>
+
+  </section>
+
+  <section name="Usage">
+
+    <p>
+      Scheduled jobs can be either created programmatically (using the Quartz API) or by 
+      using an XML configuration based on the 'XMLSchedulingDataProcessorPlugin'. A 
+      scheduled job consists of a class implementing the interface 
+      <a href="http://www.quartz-scheduler.org/docs/api/1.8.1/org/quartz/Job.html">org.quartz.Job</a>
+      This requires just that one method be defined, execute(), whose
+      <a href="http://www.opensymphony.com/quartz/api/org/quartz/JobExecutionContext.html">
+      org.quartz.JobExecutionContext</a> argument provides you with details of the
+      execution context when the task is triggered.
+    </p>
+
+    <source>
+<![CDATA[
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+
+public class SimpleJob implements Job
+{
+  public static boolean executed = false;
+
+  public SimpleJob()
+  {
+    super();
+  }
+
+  public void execute(JobExecutionContext context)
+    throws JobExecutionException
+  {
+    executed = true;
+  }
+}]]>
+    </source>
+
+  <p>
+    In order to invoke the SimpleJob we have to tell Quartz when to invoke
+    the 'execute' method. In this case we create a CRON trigger firing every
+    second to invoke SimpleJob#execute() on a newly created instance. Please
+    note that we definea set of parameters using the &lt;job-data-map&gt; 
+    which are available using 'JobExecutionContext'.   
+  </p>
+    
+    <source>
+<![CDATA[
+<schedule>
+  <job>
+    <name>simpleJob</name>
+    <group>TURBINE</group>
+    <description>A simple job</description>
+    <job-class>org.apache.fulcrum.quartz.test.SimpleJob</job-class>
+    <job-data-map>
+      <entry>
+        <key>dressing-list</key>
+        <value>ketchup,mayo</value>
+      </entry>
+      <entry>
+        <key>burger-type</key>
+        <value>hotdog</value>
+      </entry>
+    </job-data-map>
+  </job>
+  <trigger>
+    <cron>
+      <!-- define a Cron trigger firing every second -->
+      <name>cronTrigger</name>
+      <group>TURBINE</group>
+      <job-name>simpleJob</job-name>
+      <job-group>TURBINE</job-group>
+      <cron-expression>* * * * * ?</cron-expression>
+    </cron>
+  </trigger>
+</schedule> 
+]]>
+    </source>
+  </section>
+
+  <section name="Implementation Details">
+    <p>
+      The implemtation registers a JobListener which intercepts the execution of 
+      the job to set some Avalon infrastructure such 'Logger' and 'ServiceManager'. 
+      This allows an simple invocation of an Avalon service within the job execution.
+    </p>
+    <p>
+      On shutdown the service implementation ensures that all currently executed jobs
+      are finished. This avoids problems if a scheduled job tries to access already
+      disposed services.
+    </p>
+    <p>
+      The service can be started without quartz configuration (relying on default 
+      settings) and preconfigered triggers.
+    </p>
+  </section>
+</body>
+</document>
