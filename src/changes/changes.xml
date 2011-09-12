@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+<document>
+  <properties>
+    <title>Fulcrum Quartz</title>
+    <author email="epugh@opensourceconnections.com">Eric Pugh</author>
+  </properties>
+
+  <body>
+    <release version="1.1.0" date="in svn">
+      <action dev="tv" type="update" date="2011-09-12">
+        Update dependency to quartz-2.0.0
+      </action>
+      <action dev="sgoeschl" type="update" date="2010-08-09">
+        Injecting Avalon logger into a job instance if "LogEnabled"
+        is implemented by this job instance.
+      </action>
+      <action dev="sgoeschl" type="update" date="2010-08-08">
+        Complete rewrite of the service thereby using quartz-1.8.3 and
+        dropping xstream.
+      </action>
+      <action dev="sgoeschl" type="update" date="2010-03-22">
+        Improved the M2 build to cut a release candidate
+      </action>
+      <action dev="seade" type="update">
+        Added a Maven 2 pom and expanded the JavaDocs.
+      </action>
+      <action dev="seade" type="update">
+        Bump to Quartz 1.5.2, update to new XStream xml format for CronTrigger.
+        It looks like this may have stabilized now.
+        Thanks to Youngho Cho for the patch.
+      </action>
+      <action dev="epugh" type="update">
+        Bump to Quartz 1.5.1.
+      </action>
+      <action dev="epugh" type="update">
+        Upgrade to Quartz 1.5, update for the new xstream xml format for CronTrigger.
+      </action>
+    </release>
+    <release version="1.0" date="2004-11-24">
+     <action dev="epugh" type="add">
+        If you provide a jobName and jobGroup for a trigger it will autoschedule
+        that component.
+      </action>
+     <action dev="epugh" type="update">
+        Removed the component Factory for loading jobdetails and triggers
+        in favor of xstream
+      </action>
+     <action dev="epugh" type="update">
+        Initial import
+      </action>
+    </release>
+  </body>
+</document>
+
