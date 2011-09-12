@@ -42,9 +42,9 @@
       Scheduled jobs can be either created programmatically (using the Quartz API) or by 
       using an XML configuration based on the 'XMLSchedulingDataProcessorPlugin'. A 
       scheduled job consists of a class implementing the interface 
-      <a href="http://www.quartz-scheduler.org/docs/api/1.8.1/org/quartz/Job.html">org.quartz.Job</a>
+      <a href="http://www.quartz-scheduler.org/api/2.0.0/org/quartz/Job.html">org.quartz.Job</a>
       This requires just that one method be defined, execute(), whose
-      <a href="http://www.opensymphony.com/quartz/api/org/quartz/JobExecutionContext.html">
+      <a href="http://www.quartz-scheduler.org/api/2.0.0/org/quartz/JobExecutionContext.html">
       org.quartz.JobExecutionContext</a> argument provides you with details of the
       execution context when the task is triggered.
     </p>
@@ -76,7 +76,7 @@ public class SimpleJob implements Job
     In order to invoke the SimpleJob we have to tell Quartz when to invoke
     the 'execute' method. In this case we create a CRON trigger firing every
     second to invoke SimpleJob#execute() on a newly created instance. Please
-    note that we definea set of parameters using the &lt;job-data-map&gt; 
+    note that we define a set of parameters using the &lt;job-data-map&gt; 
     which are available using 'JobExecutionContext'.   
   </p>
     
@@ -116,7 +116,7 @@ public class SimpleJob implements Job
 
   <section name="Implementation Details">
     <p>
-      The implemtation registers a JobListener which intercepts the execution of 
+      The implementation registers a JobListener which intercepts the execution of 
       the job to set some Avalon infrastructure such 'Logger' and 'ServiceManager'. 
       This allows an simple invocation of an Avalon service within the job execution.
     </p>
@@ -127,7 +127,7 @@ public class SimpleJob implements Job
     </p>
     <p>
       The service can be started without quartz configuration (relying on default 
-      settings) and preconfigered triggers.
+      settings) and preconfigured triggers.
     </p>
   </section>
 </body>
