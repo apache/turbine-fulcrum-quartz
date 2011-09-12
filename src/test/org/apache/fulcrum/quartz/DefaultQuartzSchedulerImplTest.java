@@ -19,15 +19,21 @@
 
 package org.apache.fulcrum.quartz;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.fulcrum.quartz.test.NotSoSimpleJob;
 import org.apache.fulcrum.quartz.test.SimpleJob;
+import org.quartz.DateBuilder;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
-import org.quartz.SimpleTrigger;
+import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
-import org.quartz.TriggerUtils;
-
-import java.util.Date;
+import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
+import org.quartz.impl.matchers.GroupMatcher;
 
 /**
  * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
@@ -54,8 +60,8 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
     {
         Scheduler scheduler = quartz.getScheduler();
         assertNotNull(scheduler);
-        String[] jobNames = scheduler.getJobNames("TURBINE");
-        assertEquals("Expected two registered jobs", 2, jobNames.length);
+        Set jobNames = scheduler.getJobKeys(GroupMatcher.groupEquals("TURBINE"));
+        assertEquals("Expected two registered jobs", 2, jobNames.size());
     }
 
     /**
@@ -64,9 +70,9 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
      */
     public void testJobDetailMap() throws Exception
     {
-        JobDetail jobDetail = quartz.getScheduler().getJobDetail("simpleJob", "TURBINE");
+        JobDetail jobDetail = quartz.getScheduler().getJobDetail(JobKey.jobKey("simpleJob", "TURBINE"));
         assertNotNull(jobDetail);
-        assertEquals("simpleJob", jobDetail.getName());
+        assertEquals("simpleJob", jobDetail.getKey().getName());
         assertNotNull(jobDetail.getJobDataMap());
         assertEquals(2, jobDetail.getJobDataMap().size());
     }
@@ -76,9 +82,9 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
      */
     public void testGetTriggersOfJob() throws Exception
     {
-        Trigger triggers[] = quartz.getScheduler().getTriggersOfJob("notSoSimpleJob", "TURBINE");
-        assertEquals(1, triggers.length);
-        assertEquals("cronTrigger", triggers[0].getName());
+        List triggers = quartz.getScheduler().getTriggersOfJob(JobKey.jobKey("notSoSimpleJob", "TURBINE"));
+        assertEquals(1, triggers.size());
+        assertEquals("cronTrigger", ((Trigger)triggers.get(0)).getKey().getName());
     }
 
     /**
@@ -88,13 +94,25 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
     public void testAddRemoveTrigger() throws Exception
     {
         Scheduler scheduler = quartz.getScheduler();
-        Date date = TriggerUtils.getDateOf(0, 0, 0, 1, 1, 2099);
-        Trigger someDay = new SimpleTrigger("someTrigger", "TURBINE", "simpleJob", "TURBINE", date, null, 0, 0L);
+        TriggerKey triggerKey = TriggerKey.triggerKey("someTrigger", "TURBINE");
+
+        Date date = DateBuilder.dateOf(0, 0, 0, 1, 1, 2099);
+
+        Trigger someDay = TriggerBuilder.newTrigger()
+            .withIdentity(triggerKey)
+            .forJob("simpleJob", "TURBINE")
+            .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                .withIntervalInHours(1)
+                .repeatForever())
+            .startAt(date)
+            .build();
+
         scheduler.scheduleJob(someDay);
-        Trigger trigger = scheduler.getTrigger("someTrigger", "TURBINE");
+
+        Trigger trigger = scheduler.getTrigger(triggerKey);
         assertNotNull(trigger);
-        scheduler.unscheduleJob("someTrigger", "TURBINE");
-        trigger = scheduler.getTrigger("someTrigger", "TURBINE");
+        scheduler.unscheduleJob(triggerKey);
+        trigger = scheduler.getTrigger(triggerKey);
         assertNull(trigger);
     }
 
