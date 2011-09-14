@@ -19,6 +19,12 @@
 
 package org.apache.fulcrum.quartz.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.activity.Startable;
@@ -37,13 +43,13 @@ import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
 import org.quartz.JobListener;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
-
-import java.util.Properties;
+import org.quartz.impl.matchers.GroupMatcher;
 
 /**
  * Avalon service  wrapping the QuartzScheduler.
@@ -118,14 +124,14 @@ public class QuartzSchedulerImpl
         }
         else
         {
-            getLogger().info("Using Quartz default configuration since no user-supplied configuration was found");            
+            getLogger().info("Using Quartz default configuration since no user-supplied configuration was found");
             schedulerFactory.initialize();
         }
-        
+
         this.scheduler = schedulerFactory.getScheduler();
 
         // add this service instance as JobListener to allow basic monitoring
-        getScheduler().addGlobalJobListener(this);
+        getScheduler().getListenerManager().addJobListener(this, new ArrayList());
     }
 
     public void start() throws Exception
@@ -220,14 +226,14 @@ public class QuartzSchedulerImpl
     {
         if (ex != null)
         {
-            String msg = "Executing the job '" + context.getJobDetail().getFullName() + "' failed";
+            String msg = "Executing the job '" + context.getJobDetail().getKey() + "' failed";
             getLogger().error(msg, ex.getCause());
         }
         else
         {
             if (getLogger().isDebugEnabled())
             {
-                getLogger().debug("Executing the job '" + context.getJobDetail().getFullName() + "' took " + context.getJobRunTime() + " ms");
+                getLogger().debug("Executing the job '" + context.getJobDetail().getKey() + "' took " + context.getJobRunTime() + " ms");
             }
         }
     }
@@ -244,25 +250,26 @@ public class QuartzSchedulerImpl
 
     private void logSchedulerConfiguration() throws SchedulerException
     {
-        String[] jobGroups = getScheduler().getJobGroupNames();
-        for (int i = 0; i < jobGroups.length; i++)
+        List jobGroups = getScheduler().getJobGroupNames();
+        for (Iterator i = jobGroups.iterator(); i.hasNext();)
         {
-            String jobGroup = jobGroups[i];
-            String[] jobsInGroup = getScheduler().getJobNames(jobGroup);
-            getLogger().info("Job Group: " + jobGroup + " contains the following number of jobs : " + jobsInGroup.length);
-            for (int j = 0; j < jobsInGroup.length; j++)
+            String jobGroup = (String)i.next();
+            Set jobsInGroup = getScheduler().getJobKeys(GroupMatcher.groupEquals(jobGroup));
+            getLogger().info("Job Group: " + jobGroup + " contains the following number of jobs : " + jobsInGroup.size());
+            for (Iterator j = jobsInGroup.iterator(); j.hasNext();)
             {
                 StringBuffer buffer = new StringBuffer();
-                String jobName = jobsInGroup[j];
-                JobDetail jobDetail = getScheduler().getJobDetail(jobName, jobGroup);
-                Trigger[] jobTriggers = getScheduler().getTriggersOfJob(jobName, jobGroup);
-                buffer.append(jobDetail.getFullName());
+                JobKey jobKey = (JobKey)j.next();
+                JobDetail jobDetail = getScheduler().getJobDetail(jobKey);
+                List jobTriggers = getScheduler().getTriggersOfJob(jobKey);
+                buffer.append(jobDetail.getKey());
                 buffer.append(" => ");
-                if(jobTriggers != null && jobTriggers.length > 0)
+                if(jobTriggers != null && !jobTriggers.isEmpty())
                 {
-                    buffer.append(jobTriggers[0].getFullName());
+                    Trigger jt = (Trigger)jobTriggers.get(0);
+                    buffer.append(jt.getKey());
                     buffer.append(" (");
-                    buffer.append(jobTriggers[0].getNextFireTime());
+                    buffer.append(jt.getNextFireTime());
                     buffer.append(")");
                 }
                 else
@@ -272,6 +279,6 @@ public class QuartzSchedulerImpl
 
                 getLogger().info(buffer.toString());
             }
-        }        
+        }
     }
 }
