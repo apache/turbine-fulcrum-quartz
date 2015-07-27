@@ -27,6 +27,5 @@
       <item name="Configuration"       href="/configuration.html"/>
       <item name="Cron Samples"        href="/cronsamples.html"/>
     </menu>  
-    ${reports}
   </body>
 </project>
