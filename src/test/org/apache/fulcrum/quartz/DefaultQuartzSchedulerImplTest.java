@@ -43,7 +43,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
 {
 
     /**
-     * Make sure that the Quartz sheduler is up and running
+     * Make sure that the Quartz scheduler is up and running
      */
     public void testService() throws Exception
     {
@@ -60,7 +60,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
     {
         Scheduler scheduler = quartz.getScheduler();
         assertNotNull(scheduler);
-        Set jobNames = scheduler.getJobKeys(GroupMatcher.groupEquals("TURBINE"));
+        Set<JobKey> jobNames = scheduler.getJobKeys(GroupMatcher.jobGroupEquals("TURBINE"));
         assertEquals("Expected two registered jobs", 2, jobNames.size());
     }
 
@@ -82,7 +82,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
      */
     public void testGetTriggersOfJob() throws Exception
     {
-        List triggers = quartz.getScheduler().getTriggersOfJob(JobKey.jobKey("notSoSimpleJob", "TURBINE"));
+        List<? extends Trigger> triggers = quartz.getScheduler().getTriggersOfJob(JobKey.jobKey("notSoSimpleJob", "TURBINE"));
         assertEquals(1, triggers.size());
         assertEquals("cronTrigger", ((Trigger)triggers.get(0)).getKey().getName());
     }

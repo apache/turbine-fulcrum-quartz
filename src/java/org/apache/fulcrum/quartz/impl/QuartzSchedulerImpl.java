@@ -20,7 +20,6 @@
 package org.apache.fulcrum.quartz.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -45,6 +44,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
 import org.quartz.JobListener;
+import org.quartz.Matcher;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
@@ -58,6 +58,15 @@ public class QuartzSchedulerImpl
         extends AbstractLogEnabled
         implements QuartzScheduler, Configurable, Serviceable, Disposable, Initializable, ThreadSafe, JobListener, Startable
 {
+    /** Configuration key */
+    private static final String CONFIG_CONFIGURATION = "configuration";
+
+    /** Configuration key */
+    private static final String CONFIG_PROPERTY_FILE = "quartzPropertyFile";
+
+    /** Configuration key */
+    private static final String CONFIG_PROPERTIES = "properties";
+
     /**
      * the Avalon service serviceManager
      */
@@ -83,23 +92,25 @@ public class QuartzSchedulerImpl
     /**
      * @see org.apache.avalon.framework.configuration.Configurable#configure(org.apache.avalon.framework.configuration.Configuration)
      */
+    @Override
     public void configure(Configuration conf) throws ConfigurationException
     {
-        Configuration quartzConf = conf.getChild("configuration", true);
+        Configuration quartzConf = conf.getChild(CONFIG_CONFIGURATION, true);
 
-        if(quartzConf.getChild("properties", false) != null)
+        if(quartzConf.getChild(CONFIG_PROPERTIES, false) != null)
         {
-            this.quartzProperties = Parameters.toProperties(Parameters.fromConfiguration(quartzConf.getChild("properties")));
+            this.quartzProperties = Parameters.toProperties(Parameters.fromConfiguration(quartzConf.getChild(CONFIG_PROPERTIES)));
         }
-        else if(quartzConf.getChild("quartzPropertyFile", false) != null)
+        else if(quartzConf.getChild(CONFIG_PROPERTY_FILE, false) != null)
         {
-            this.quartzPropertyFile = quartzConf.getChild("quartzPropertyFile").getValue();
+            this.quartzPropertyFile = quartzConf.getChild(CONFIG_PROPERTY_FILE).getValue();
         }
     }
 
     /**
      * @see org.apache.avalon.framework.service.Serviceable#service(org.apache.avalon.framework.service.ServiceManager)
      */
+    @Override
     public void service(ServiceManager manager) throws ServiceException
     {
         this.serviceManager = manager;
@@ -108,6 +119,7 @@ public class QuartzSchedulerImpl
     /**
      * @see org.apache.avalon.framework.activity.Initializable#initialize()
      */
+    @Override
     public void initialize() throws Exception
     {
         // instantiating a specific scheduler from a property file or properties
@@ -131,9 +143,10 @@ public class QuartzSchedulerImpl
         this.scheduler = schedulerFactory.getScheduler();
 
         // add this service instance as JobListener to allow basic monitoring
-        getScheduler().getListenerManager().addJobListener(this, new ArrayList());
+        getScheduler().getListenerManager().addJobListener(this, new ArrayList<Matcher<JobKey>>());
     }
 
+    @Override
     public void start() throws Exception
     {
         getScheduler().start();
@@ -145,6 +158,7 @@ public class QuartzSchedulerImpl
 
     }
 
+    @Override
     public void stop() throws Exception
     {
         getScheduler().standby();
@@ -153,6 +167,7 @@ public class QuartzSchedulerImpl
     /**
      * @see org.apache.avalon.framework.activity.Disposable#dispose()
      */
+    @Override
     public void dispose()
     {
         try
@@ -174,6 +189,7 @@ public class QuartzSchedulerImpl
     /**
      * @see org.apache.fulcrum.quartz.QuartzScheduler#getScheduler()
      */
+    @Override
     public Scheduler getScheduler()
     {
         return scheduler;
@@ -184,6 +200,7 @@ public class QuartzSchedulerImpl
      *
      * @see org.quartz.JobListener#getName()
      */
+    @Override
     public String getName()
     {
         return getClass().getName();
@@ -195,6 +212,7 @@ public class QuartzSchedulerImpl
      *
      * @see org.quartz.JobListener#jobToBeExecuted(org.quartz.JobExecutionContext)
      */
+    @Override
     public void jobToBeExecuted(JobExecutionContext context)
     {
         Job job = context.getJobInstance();
@@ -222,6 +240,7 @@ public class QuartzSchedulerImpl
     /**
      * @see org.quartz.JobListener#jobWasExecuted(org.quartz.JobExecutionContext, org.quartz.JobExecutionException)
      */
+    @Override
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException ex)
     {
         if (ex != null)
@@ -241,6 +260,7 @@ public class QuartzSchedulerImpl
     /**
      * @see org.quartz.JobListener#jobExecutionVetoed(org.quartz.JobExecutionContext)
      */
+    @Override
     public void jobExecutionVetoed(JobExecutionContext context)
     {
         // nothing to do
@@ -250,23 +270,20 @@ public class QuartzSchedulerImpl
 
     private void logSchedulerConfiguration() throws SchedulerException
     {
-        List jobGroups = getScheduler().getJobGroupNames();
-        for (Iterator i = jobGroups.iterator(); i.hasNext();)
+        for (String jobGroup : getScheduler().getJobGroupNames())
         {
-            String jobGroup = (String)i.next();
-            Set jobsInGroup = getScheduler().getJobKeys(GroupMatcher.groupEquals(jobGroup));
+            Set<JobKey> jobsInGroup = getScheduler().getJobKeys(GroupMatcher.jobGroupEquals(jobGroup));
             getLogger().info("Job Group: " + jobGroup + " contains the following number of jobs : " + jobsInGroup.size());
-            for (Iterator j = jobsInGroup.iterator(); j.hasNext();)
+            for (JobKey jobKey : jobsInGroup)
             {
-                StringBuffer buffer = new StringBuffer();
-                JobKey jobKey = (JobKey)j.next();
+                StringBuilder buffer = new StringBuilder();
                 JobDetail jobDetail = getScheduler().getJobDetail(jobKey);
-                List jobTriggers = getScheduler().getTriggersOfJob(jobKey);
+                List<? extends Trigger> jobTriggers = getScheduler().getTriggersOfJob(jobKey);
                 buffer.append(jobDetail.getKey());
                 buffer.append(" => ");
                 if(jobTriggers != null && !jobTriggers.isEmpty())
                 {
-                    Trigger jt = (Trigger)jobTriggers.get(0);
+                    Trigger jt = jobTriggers.get(0);
                     buffer.append(jt.getKey());
                     buffer.append(" (");
                     buffer.append(jt.getNextFireTime());
