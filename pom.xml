@@ -68,7 +68,7 @@
   <dependencies>
   
     <!-- uncomment if using Java 9 JDK or later -->
-    <!-- 
+    <!--
     <dependency>
         <groupId>javax.xml.bind</groupId>
         <artifactId>jaxb-api</artifactId>
@@ -90,7 +90,6 @@
         <version>1.1.1</version>
     </dependency>
     -->
-  
   
     <!-- Test Dependencies -->
     <dependency>
@@ -120,12 +119,12 @@
     <dependency>
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz</artifactId>
-      <version>2.2.3</version>
+      <version>2.3.0</version>
     </dependency>
     <dependency>
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz-jobs</artifactId>
-      <version>2.2.3</version>
+      <version>2.3.0</version>
     </dependency>
     <dependency>
       <groupId>javax.transaction</groupId>
