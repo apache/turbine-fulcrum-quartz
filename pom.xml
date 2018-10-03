@@ -138,22 +138,6 @@
   <build>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <testSourceDirectory>${basedir}/src/test</testSourceDirectory>
-
-    <!-- uncomment plugins if using JDK 9 or later -->
-    <!--
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-                <forkMode>always</forkMode>
-                <argLine>--add-modules java.xml.bind</argLine>
-                <argLine>--add-modules java.activation</argLine>
-                <argLine>--add-opens=java.base/java.lang=ALL-UNNAMED --illegal-access=deny</argLine>
-            </configuration>
-        </plugin>
-    </plugins>
-    -->
   </build>
   
   <properties>
