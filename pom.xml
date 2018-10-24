@@ -17,7 +17,7 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>turbine-parent</artifactId>
+       <artifactId>turbine-parent</artifactId>
        <groupId>org.apache.turbine</groupId>
        <version>5</version>
   </parent>
@@ -112,6 +112,14 @@
   <build>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <testSourceDirectory>${basedir}/src/test</testSourceDirectory>
+    <testResources>
+            <testResource>
+                <directory>${basedir}/src/resources/test</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </testResource>
+     </testResources>
   </build>
   
   <properties>

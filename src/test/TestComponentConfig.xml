@@ -42,7 +42,7 @@
                 <parameter name="org.quartz.jobStore.misfireThreshold" value="60000"/>
                 <parameter name="org.quartz.jobStore.class" value="org.quartz.simpl.RAMJobStore"/>
                 <parameter name="org.quartz.plugin.jobInitializer.class" value="org.quartz.plugins.xml.XMLSchedulingDataProcessorPlugin"/>
-                <parameter name="org.quartz.plugin.jobInitializer.fileNames" value="./src/test/quartz.xml"/>
+                <parameter name="org.quartz.plugin.jobInitializer.fileNames" value="./quartz.xml"/>
                 <parameter name="org.quartz.plugin.jobInitializer.failOnFileNotFound" value="true"/>
                 <parameter name="org.quartz.plugin.jobInitializer.scanInterval" value="120"/>
                 <parameter name="org.quartz.plugin.jobInitializer.wrapInUserTransaction" value="false"/>
