@@ -44,6 +44,8 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
 
     /**
      * Make sure that the Quartz scheduler is up and running
+     * 
+     * @throws Exception generic exception
      */
     public void testService() throws Exception
     {
@@ -55,6 +57,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
     /**
      * Get all scheduled jobs for "TURBINE" to make sure that
      * the registration worked.
+     * @throws Exception generic exception 
      */
     public void testGetJobs() throws Exception
     {
@@ -67,6 +70,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
     /**
      * Get the job details and job data map of an existing job to
      * make sure that the XStream configuration works.
+     * @throws Exception generic exception
      */
     public void testJobDetailMap() throws Exception
     {
@@ -79,6 +83,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
 
     /**
      * Make sure the "notSoSimpleJob" is triggered by the CronTrigger.
+     * @throws Exception generic exception
      */
     public void testGetTriggersOfJob() throws Exception
     {
@@ -90,6 +95,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
     /**
      * Test adding/removing a scheduled job which would be executed
      * in the future.
+     * @throws Exception generic exception
      */
     public void testAddRemoveTrigger() throws Exception
     {
@@ -119,6 +125,7 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase
     /**
      * Make sure that our two registered jobs are executed after
      * one second.
+     * @throws Exception generic exception
      */
     public void testJobExecution() throws Exception
     {
