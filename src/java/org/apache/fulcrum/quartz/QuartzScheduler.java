@@ -27,6 +27,9 @@ import org.quartz.Scheduler;
  */
 public interface QuartzScheduler
 {
+	/** Avalon role - used to id the component within the manager */
+	String ROLE = QuartzScheduler.class.getName();
+		
     /**
      * Get the underlying Quartz scheduler.
      *
