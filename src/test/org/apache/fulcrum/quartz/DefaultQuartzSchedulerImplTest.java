@@ -1,3 +1,7 @@
+package org.apache.fulcrum.quartz;
+
+
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,10 +21,6 @@
  * under the License.
  */
 
-package org.apache.fulcrum.quartz;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.apache.fulcrum.quartz.test.NotSoSimpleJob;
 import org.apache.fulcrum.quartz.test.SimpleJob;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.quartz.DateBuilder;
 import org.quartz.JobDetail;
@@ -40,12 +39,18 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.GroupMatcher;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad
  *         Cruz</a>
  * @author <a href="mailto:epughNOSPAM@opensourceconnections.com">Eric Pugh </a>
  */
-public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase {
+public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase 
+{
 
 	/**
 	 * Make sure that the Quartz scheduler is up and running
@@ -53,10 +58,11 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase {
 	 * @throws Exception generic exception
 	 */
 	@Test
-	public void testService() throws Exception {
+	public void testService() throws Exception 
+	{
 		Scheduler scheduler = quartz.getScheduler();
-		Assert.assertNotNull(scheduler);
-		Assert.assertNotNull(scheduler.getContext());
+		assertNotNull(scheduler);
+		assertNotNull(scheduler.getContext());
 	}
 
 	/**
@@ -66,7 +72,8 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase {
 	 * @throws Exception generic exception
 	 */
 	@Test
-	public void testAddRemoveTrigger() throws Exception {
+	public void testAddRemoveTrigger() throws Exception 
+	{
 
 		Scheduler scheduler = quartz.getScheduler();
 		TriggerKey triggerKey = TriggerKey.triggerKey("someTrigger", "TURBINE");
@@ -94,11 +101,12 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase {
 	 * @throws Exception generic exception
 	 */
 	@Test
-	public void testGetJobs() throws Exception {
+	public void testGetJobs() throws Exception 
+	{
 		Scheduler scheduler = quartz.getScheduler();
-		Assert.assertNotNull(scheduler);
+		assertNotNull(scheduler);
 		Set<JobKey> jobNames = scheduler.getJobKeys(GroupMatcher.jobGroupEquals("TURBINE"));
-		Assert.assertEquals("Expected two registered jobs", 2, jobNames.size());
+		assertEquals(2, jobNames.size(), "Expected two registered jobs");
 	}
 
 	/**
@@ -111,10 +119,10 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase {
 	public void testJobDetailMap() throws Exception {
 
 		JobDetail jobDetail = quartz.getScheduler().getJobDetail(JobKey.jobKey("simpleJob", "TURBINE"));
-		Assert.assertNotNull(jobDetail);
-		Assert.assertEquals("simpleJob", jobDetail.getKey().getName());
-		Assert.assertNotNull(jobDetail.getJobDataMap());
-		Assert.assertEquals(2, jobDetail.getJobDataMap().size());
+		assertNotNull(jobDetail);
+		assertEquals("simpleJob", jobDetail.getKey().getName());
+		assertNotNull(jobDetail.getJobDataMap());
+		assertEquals(2, jobDetail.getJobDataMap().size());
 	}
 
 	/**
@@ -126,8 +134,8 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase {
 	public void testGetTriggersOfJob() throws Exception {
 		List<? extends Trigger> triggers = quartz.getScheduler()
 				.getTriggersOfJob(JobKey.jobKey("notSoSimpleJob", "TURBINE"));
-		Assert.assertEquals(1, triggers.size());
-		Assert.assertEquals("cronTrigger", ((Trigger) triggers.get(0)).getKey().getName());
+		assertEquals(1, triggers.size());
+		assertEquals("cronTrigger", ((Trigger) triggers.get(0)).getKey().getName());
 	}
 
 	/**
@@ -138,14 +146,14 @@ public class DefaultQuartzSchedulerImplTest extends BaseQuartzTestCase {
 	@Test
 	public void testJobExecution() throws Exception {
 		Thread.sleep(2000);
-		Assert.assertTrue("SimpleJob was not executed", SimpleJob.wasExecuted);
-		Assert.assertTrue("NotSoSimpleJob was not executed", NotSoSimpleJob.wasExecuted);
-		Assert.assertTrue("NotSoSimpleJob was not serviced", NotSoSimpleJob.wasServiced);
+		assertTrue(SimpleJob.wasExecuted, "SimpleJob was not executed");
+		assertTrue(NotSoSimpleJob.wasExecuted, "NotSoSimpleJob was not executed");
+		assertTrue(NotSoSimpleJob.wasServiced, "NotSoSimpleJob was not executed");
 		SimpleJob.reset();
 		NotSoSimpleJob.reset();
 		Thread.sleep(2000);
-		Assert.assertTrue("SimpleJob was not executed", SimpleJob.wasExecuted);
-		Assert.assertTrue("NotSoSimpleJob was not executed", NotSoSimpleJob.wasExecuted);
-		Assert.assertTrue("NotSoSimpleJob was not serviced", NotSoSimpleJob.wasServiced);
+		assertTrue(SimpleJob.wasExecuted, "SimpleJob was not executed");
+		assertTrue(NotSoSimpleJob.wasExecuted, "NotSoSimpleJob was not executed");
+		assertTrue(NotSoSimpleJob.wasServiced, "NotSoSimpleJob was not serviced");
 	}
 }

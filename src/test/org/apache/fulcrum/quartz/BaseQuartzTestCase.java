@@ -1,3 +1,13 @@
+package org.apache.fulcrum.quartz;
+
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.apache.avalon.framework.logger.Logger;
+import org.apache.fulcrum.quartz.test.NotSoSimpleJob;
+import org.apache.fulcrum.quartz.test.SimpleJob;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,22 +27,13 @@
  * under the License.
  */
 
-package org.apache.fulcrum.quartz;
 
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import org.apache.avalon.framework.logger.Log4JLogger;
-import org.apache.avalon.framework.logger.Logger;
-import org.apache.fulcrum.quartz.test.NotSoSimpleJob;
-import org.apache.fulcrum.quartz.test.SimpleJob;
 import org.apache.fulcrum.testcontainer.BaseUnit5Test;
-import org.apache.log4j.LogManager;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
+
 
 /**
  * Handle looking up and then the icky cleanup of Quartz.
@@ -40,20 +41,27 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:epughNOSPAM@opensourceconnections.com">Eric Pugh </a>
  */
 @RunWith(JUnitPlatform.class)
-public class BaseQuartzTestCase extends BaseUnit5Test {
+public class BaseQuartzTestCase extends BaseUnit5Test 
+{
 
     private final String preDefinedOutput = "{\"container\":{\"cf\":\"Config.xml\"},\"configurationName\":\"Config.xml\",\"name\":\"mytest\"}";
     QuartzScheduler quartz = null;
     Logger logger;
 
+    /**
+     * @throws Exception generic exception
+     */
     @BeforeEach
-    public void setUp() throws Exception {
-        logger = new Log4JLogger(LogManager.getLogger(getClass().getName()) );
+    public void setUp() throws Exception 
+    {
 		SimpleJob.reset();
 		NotSoSimpleJob.reset();
-        try {
+        try 
+        {
         	quartz = (QuartzScheduler) this.lookup(QuartzScheduler.ROLE);
-        } catch (Throwable e) {
+        } 
+        catch (Throwable e) 
+        {
             fail(e.getMessage());
         }
         assertNotNull(quartz);
@@ -63,8 +71,9 @@ public class BaseQuartzTestCase extends BaseUnit5Test {
 	/* (non-Javadoc)
 	 * @see org.apache.fulcrum.testcontainer.BaseUnit5Test#tearDown()
 	 */
-	@After
-	public void tearDown() {
+	@AfterEach
+	public void tearDown() 
+	{
 		release(QuartzScheduler.ROLE);
 		SimpleJob.reset();
 		NotSoSimpleJob.reset();

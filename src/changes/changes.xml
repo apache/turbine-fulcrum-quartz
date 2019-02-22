@@ -25,6 +25,12 @@
 
   <body>
     <release version="1.1.1" date="in SVN">
+      <action dev="painter" type="update">
+        Update unit tests to BaseUnit5Test
+      </action>
+      <action dev="painter" type="update">
+        Update to yaafi-1.0.8 and testcontainer 1.0.8
+      </action>    
       <action dev="tv" type="update">
         Update dependency to quartz-2.2.1
       </action>

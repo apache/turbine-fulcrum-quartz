@@ -34,7 +34,7 @@
 			file), and over-write is false, ignore them rather then generating an error -->
 		<ignore-duplicates>false</ignore-duplicates>
 	</processing-directives>
-<schedule>
+	<schedule>
         <job>
             <name>simpleJob</name>
             <group>TURBINE</group>
