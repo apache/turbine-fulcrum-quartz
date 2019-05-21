@@ -41,7 +41,7 @@
 
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/tags/fulcrum-quartz-1.1.1/</connection>
-    <developerConnection>scm:svn: https://svn.apache.org/repos/asf/turbine/fulcrum/tags/fulcrum-quartz-1.1.1</developerConnection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/tags/fulcrum-quartz-1.1.1</developerConnection>
     <url>http://svn.apache.org/viewvc/turbine/fulcrum/tags/fulcrum-quartz-1.1.1</url>
   </scm>
 
