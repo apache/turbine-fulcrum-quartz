@@ -74,6 +74,13 @@
 	</developers>
 
 	<dependencies>
+
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.1</version>
+		</dependency>
+
 		<!-- Service Dependencies -->
 		<dependency>
 			<groupId>org.apache.avalon.framework</groupId>
