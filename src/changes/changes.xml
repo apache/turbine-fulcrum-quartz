@@ -24,7 +24,15 @@
   </properties>
 
   <body>
-    <release version="1.1.1" date="in SVN">
+      <release version="1.1.2" date="in SVN">
+           <action dev="gk" type="update">
+       security updates: Quartz-Jobs to 2.3.2 , quartz to 2.3.2 (CVE-2019-13990)
+      </action>
+      <action dev="painter" type="update">
+        Allow Java9+ build by adding dependency
+      </action>
+      </release>
+    <release version="1.1.1" date="2019-02-26">
       <action dev="painter" type="update">
         Update unit tests to BaseUnit5Test
       </action>

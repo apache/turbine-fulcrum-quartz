@@ -31,8 +31,6 @@ import org.apache.fulcrum.quartz.test.SimpleJob;
 import org.apache.fulcrum.testcontainer.BaseUnit5Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 
 
 /**
@@ -40,7 +38,7 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:epughNOSPAM@opensourceconnections.com">Eric Pugh </a>
  */
-@RunWith(JUnitPlatform.class)
+
 public class BaseQuartzTestCase extends BaseUnit5Test 
 {
 
