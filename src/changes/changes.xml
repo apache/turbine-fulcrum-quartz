@@ -26,10 +26,10 @@
   <body>
       <release version="1.1.2" date="in SVN">
            <action dev="gk" type="update">
-       security updates: Quartz-Jobs to 2.3.2 , quartz to 2.3.2 (CVE-2019-13990)
+       Security Updates (CVE-2019-13990): Quartz-Jobs  2.3.2 , Quartz 2.3.2 
       </action>
       <action dev="painter" type="update">
-        Allow Java9+ build by adding dependency
+        Allow Java9+ build by adding dependency jaxb-api  2.3.1
       </action>
       </release>
     <release version="1.1.1" date="2019-02-26">

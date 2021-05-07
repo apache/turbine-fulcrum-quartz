@@ -32,12 +32,12 @@
 	<url>http://turbine.apache.org/fulcrum/fulcrum-quartz/</url>
 
 	<!-- Required for staging to work -->
-	<distributionManagement>
-	   <site>
+    <distributionManagement>
+       <site>
               <id>turbine.apache.org</id>
               <url>https://turbine.apache.org/fulcrum/fulcrum-quartz/</url>
-	   </site>
-	</distributionManagement>
+       </site>
+    </distributionManagement>
 
 	<scm>
 		<connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/trunk/quartz/</connection>
