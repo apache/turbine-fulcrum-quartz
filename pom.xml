@@ -16,22 +16,23 @@
    limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<artifactId>turbine-parent</artifactId>
-		<groupId>org.apache.turbine</groupId>
-		<version>8</version>
-	</parent>
+    <parent>
+        <artifactId>turbine-parent</artifactId>
+        <groupId>org.apache.turbine</groupId>
+        <version>8</version>
+        <relativePath />
+    </parent>
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.apache.fulcrum</groupId>
-	<artifactId>fulcrum-quartz</artifactId>
-	<version>1.1.2</version>
-	<name>Fulcrum Quartz</name>
-	<inceptionYear>2004</inceptionYear>
-	<description>A wrapper around the Quartz Scheduler.</description>
-	<url>http://turbine.apache.org/fulcrum/fulcrum-quartz/</url>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.fulcrum</groupId>
+    <artifactId>fulcrum-quartz</artifactId>
+    <version>1.1.2</version>
+    <name>Fulcrum Quartz</name>
+    <inceptionYear>2004</inceptionYear>
+    <description>A wrapper around the Quartz Scheduler.</description>
+    <url>https://turbine.apache.org/fulcrum/fulcrum-quartz/</url>
 
-	<!-- Required for staging to work -->
+    <!-- Required for staging to work -->
     <distributionManagement>
        <site>
               <id>turbine.apache.org</id>
@@ -146,7 +147,7 @@
 
 
 
-	</build>
+    </build>
 
   <properties>
     <turbine.site.path>fulcrum/fulcrum-quartz</turbine.site.path>

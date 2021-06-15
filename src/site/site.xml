@@ -21,11 +21,25 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.4.0 http://maven.apache.org/xsd/decoration-1.4.0.xsd"
   name="Fulcrum Quartz Service">
+  
+   <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.9</version>
+  </skin>
+  
   <body>
     <menu name="Overview">
-      <item name="About"               href="/index.html"/>
-      <item name="Configuration"       href="/configuration.html"/>
-      <item name="Cron Samples"        href="/cronsamples.html"/>
+      <item name="About"               href="index.html"/>
+      <item name="Configuration"       href="configuration.html"/>
+      <item name="Cron Samples"        href="cronsamples.html"/>
     </menu>  
-  </body>
+  </body> 
+  
+  <custom>
+      <fluidoSkin>
+        <topBarEnabled>false</topBarEnabled>
+        <sideBarEnabled>true</sideBarEnabled>
+      </fluidoSkin>
+  </custom>
 </project>
