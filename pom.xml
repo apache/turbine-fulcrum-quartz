@@ -26,7 +26,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.fulcrum</groupId>
     <artifactId>fulcrum-quartz</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3-SNAPSHOT</version>
     <name>Fulcrum Quartz</name>
     <inceptionYear>2004</inceptionYear>
     <description>A wrapper around the Quartz Scheduler.</description>
@@ -41,9 +41,9 @@
     </distributionManagement>
 
 	<scm>
-		<connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/tags/fulcrum-quartz-1.1.2</connection>
-		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/tags/fulcrum-quartz-1.1.2</developerConnection>
-		<url>http://svn.apache.org/viewvc/turbine/fulcrum/tags/fulcrum-quartz-1.1.2</url>
+		<connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/trunk/quartz/</connection>
+		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/quartz/</developerConnection>
+		<url>http://svn.apache.org/viewvc/turbine/fulcrum/trunk/quartz/</url>
 	</scm>
 
 	<developers>
