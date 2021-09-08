@@ -41,9 +41,9 @@
     </distributionManagement>
 
 	<scm>
-		<connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/trunk/quartz/</connection>
-		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/quartz/</developerConnection>
-		<url>http://svn.apache.org/viewvc/turbine/fulcrum/trunk/quartz/</url>
+		<connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-fulcrum-quartz.git</connection>
+		<developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-fulcrum-quartz.git</developerConnection>
+		<url>https://gitbox.apache.org/repos/asf/turbine-fulcrum-quartz.git</url>
 	</scm>
 
 	<developers>
