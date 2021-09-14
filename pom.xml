@@ -19,7 +19,7 @@
     <parent>
         <artifactId>turbine-parent</artifactId>
         <groupId>org.apache.turbine</groupId>
-        <version>8</version>
+        <version>9-SNAPSHOT</version>
         <relativePath />
     </parent>
 
@@ -32,13 +32,7 @@
     <description>A wrapper around the Quartz Scheduler.</description>
     <url>https://turbine.apache.org/fulcrum/fulcrum-quartz/</url>
 
-    <!-- Required for staging to work -->
-    <distributionManagement>
-       <site>
-              <id>turbine.apache.org</id>
-              <url>https://turbine.apache.org/fulcrum/fulcrum-quartz/</url>
-       </site>
-    </distributionManagement>
+    <!-- distributionManagement id and url defined in parent, adapt turbine.site.path -->
 
 	<scm>
 		<connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-fulcrum-quartz.git</connection>
@@ -145,12 +139,10 @@
 			</plugin>
 		</plugins>
 
-
-
     </build>
 
   <properties>
-    <turbine.site.path>fulcrum/fulcrum-quartz</turbine.site.path>
+    <turbine.site.path>turbine-fulcrum-quartz</turbine.site.path>
     <turbine.scmPubCheckoutDirectory>${turbine.site.cache}/fulcrum/quartz</turbine.scmPubCheckoutDirectory>
     <turbine.site.cache>${project.build.directory}/turbine-sites</turbine.site.cache>
     <siteContent.path>${project.build.directory}/staging</siteContent.path><!-- default stagingSiteURL -->
